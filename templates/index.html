@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Price Prediction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url('/static/images/must.jpg') no-repeat center center fixed;
+            background-size: cover;
+            text-align: center;
+            padding: 50px;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.8);
+            max-width: 500px;
+            margin: auto;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        select, input, button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+    </style>
+    <script>
+        function updateModels() {
+            let brand = document.getElementById("brand").value;
+            let modelSelect = document.getElementById("model");
+            modelSelect.innerHTML = "<option value=''>Select Model</option>";
+            
+            if (brand) {
+                fetch("/get_models", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ brand: brand })
+                })
+                .then(response => response.json())
+                .then(models => {
+                    models.forEach(model => {
+                        let option = document.createElement("option");
+                        option.value = model;
+                        option.textContent = model;
+                        modelSelect.appendChild(option);
+                    });
+                });
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h2>Car Price Prediction</h2>
+        <form action="/predict" method="post">
+            <label>Car Brand:</label>
+            <select id="brand" name="brand" onchange="updateModels()">
+                <option value="">Select Brand</option>
+                {% for brand in brands %}
+                    <option value="{{ brand }}">{{ brand }}</option>
+                {% endfor %}
+            </select>
+            
+            <label>Car Model:</label>
+            <select id="model" name="model">
+                <option value="">Select Model</option>
+            </select>
+            
+            <label>Year:</label>
+            <input type="number" name="year" placeholder="Year (e.g., 2015)" required>
+            
+            <label>Fuel Type:</label>
+            <select name="fuel_type">
+                <option value="Petrol">Petrol</option>
+                <option value="Diesel">Diesel</option>
+                <option value="Electric">Electric</option>
+            </select>
+            
+            <label>Transmission:</label>
+            <select name="transmission">
+                <option value="Automatic">Automatic</option>
+                <option value="Manual">Manual</option>
+            </select>
+            
+            <label>Mileage:</label>
+            <input type="number" name="mileage" placeholder="Mileage (e.g., 50000)" required>
+            
+            <label>Engine Size:</label>
+            <input type="text" name="engine_size" placeholder="Engine Size (e.g., 2.0)" required>
+            
+            <label>Number of Doors:</label>
+            <input type="number" name="doors" placeholder="Number of Doors (e.g., 4)" required>
+            
+            <label>Owner Count:</label>
+            <input type="number" name="owner_count" placeholder="Owner Count (e.g., 1)" required>
+            
+            <button type="submit">Predict Price</button>
+        </form>
+        <h3>{{ prediction_text }}</h3>
+    </div>
+</body>
+</html>
