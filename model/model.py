@@ -5,7 +5,7 @@ import os
 from sklearn.preprocessing import MinMaxScaler
 
 # Define the directory where the .pkl files are stored
-load_path = r"C:\Users\Dell\OneDrive\Desktop\Car price prediction model\model"
+load_path = r"C:\Users\jainh\Desktop\Car price prediction model\model"
 
 # Load the trained model
 with open(os.path.join(load_path, "car_price_model.pkl"), "rb") as file:
