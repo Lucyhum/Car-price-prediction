@@ -4,19 +4,24 @@ import numpy as np
 import os
 from sklearn.preprocessing import MinMaxScaler
 
-# Define the directory where the .pkl files are stored
-load_path = r"C:\Users\jainh\Desktop\Car price prediction model\model"
+# Automatically detect the folder where this file is located
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# Paths to model files (relative, works on Render + local)
+model_path = os.path.join(BASE_DIR, "car_price_model.pkl")
+scaler_path = os.path.join(BASE_DIR, "scaler.pkl")
+feature_columns_path = os.path.join(BASE_DIR, "feature_columns.pkl")
 
 # Load the trained model
-with open(os.path.join(load_path, "car_price_model.pkl"), "rb") as file:
+with open(model_path, "rb") as file:
     model = pickle.load(file)
 
 # Load the saved scaler
-with open(os.path.join(load_path, "scaler.pkl"), "rb") as file:
+with open(scaler_path, "rb") as file:
     scaler = pickle.load(file)
 
 # Load feature column names
-with open(os.path.join(load_path, "feature_columns.pkl"), "rb") as file:
+with open(feature_columns_path, "rb") as file:
     feature_columns = pickle.load(file)
 
 # Function to predict car price
