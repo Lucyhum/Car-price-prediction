@@ -5,7 +5,7 @@ import numpy as np
 import os
 import sys
 
-# Add the "model" folder to the system path
+# Add the "model" folder to the system path 
 sys.path.append(os.path.join(os.getcwd(), "model"))
 
 # Now import `predict_price` from `model.py`
